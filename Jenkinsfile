@@ -10,6 +10,9 @@ pipeline {
                 sh "curl -sS https://getcomposer.org/installer | php"
                 sh "chmod +x composer.phar"
                 sh "sudo mv composer.phar /usr/local/bin/composer"
+                sh "sudo apt install default-jre"
+                sh "sudo apt install default-jdk"
+                sh "java -version"
                 sh "composer -V"
                 sh "sudo apt install npm"
                 sh "cd /var/lib/jenkins/workspace && npm install"
@@ -28,6 +31,12 @@ pipeline {
                // sh "vendor/bin/phpunit"
                // sh "wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
                // sh "php artisan dusk:install"
+                  sh "composer require modelizer/selenium "~2.0"
+                  sh "php artisan config:clear"
+                  sh "php artisan selenium:start"
+                  sh "sudo apt-get install xvfb"
+                  sh "phpunit vendor/bin/phpunit tests/SeleniumExampleTest.php"
+                  sh "vendor/bin/steward run staging chrome"
                   sh "pwd"
           }
        }
